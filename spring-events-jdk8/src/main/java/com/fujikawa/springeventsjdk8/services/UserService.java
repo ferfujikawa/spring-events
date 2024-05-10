@@ -1,21 +1,21 @@
 package com.fujikawa.springeventsjdk8.services;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.fujikawa.springeventsjdk8.dtos.CreateUserDTO;
 import com.fujikawa.springeventsjdk8.events.UserCreatedEvent;
-import com.fujikawa.springeventsjdk8.events.UserCreatedPublisher;
 
 import reactor.core.publisher.Mono;
 
 @Service
 public class UserService {
 
-    private UserCreatedPublisher userCreatedPublisher;
+    private ApplicationEventPublisher publisher;
 
-    public UserService(UserCreatedPublisher userCreatedPublisher) {
+    public UserService(ApplicationEventPublisher publisher) {
         
-        this.userCreatedPublisher = userCreatedPublisher;
+        this.publisher = publisher;
     }
 
     public Mono<Boolean> addUser(CreateUserDTO createUserDTO) {
@@ -23,7 +23,7 @@ public class UserService {
         //Code to register user on database...
 
         Mono.just(new UserCreatedEvent(this, createUserDTO.getName(), createUserDTO.getEmail()))
-            .subscribe(userCreatedPublisher::publish);
+            .subscribe(publisher::publishEvent);
 
         return Mono.just(true);
     }
