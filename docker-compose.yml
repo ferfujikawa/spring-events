@@ -1,0 +1,15 @@
+services:
+  spring-events-jdk8:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./spring-events-jdk8
+    ports:
+      - 8081:8080
+    container_name: spring-events-jdk8
+  spring-events-jdk17:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./spring-events-jdk17
+    ports:
+      - 8082:8080
+    container_name: spring-events-jdk17
